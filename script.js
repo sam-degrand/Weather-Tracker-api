@@ -31,17 +31,22 @@ function renderSearchHistory() {
     searchHistoryContainer.append(btn);
   }
 }
-
 // Function to update history in local storage then updates displayed history.
 function appendToHistory(search) {
   // If there is no search term return the function
-  if (searchHistory.indexOf(search) !== -1) {
+  if (!search) {
     return;
   }
-  searchHistory.push(search);
+  // Check if the search is already in the history
+  if (!searchHistory.includes(search)) {
+    searchHistory.push(search);
 
-  localStorage.setItem('search-history', JSON.stringify(searchHistory));
-  renderSearchHistory();
+    // Save the updated search history to local storage
+    localStorage.setItem('search-history', JSON.stringify(searchHistory));
+
+    // Render the updated search history
+    renderSearchHistory();
+  }
 }
 
 // Function to get search history from local storage
@@ -228,7 +233,7 @@ function handleSearchFormSubmit(e) {
 }
 
 function handleSearchHistoryClick(e) {
-  // Don't do search if current elements is not a search history button
+  // Don't do a search if the current element is not a search history button
   if (!e.target.matches('.btn-history')) {
     return;
   }
